@@ -219,12 +219,9 @@ board_property boardProperties[] = {
 static const camera_size_type picture_sizes[] = {
     { 2592, 1944 }, // 5MP
     { 2048, 1536 }, // 3MP QXGA
-//  { 1920, 1080 }, //HD1080
     { 1600, 1200 }, // 2MP UXGA
-//  { 1280, 768 }, //WXGA
-//  { 1280, 720 }, //HD720
     { 1024, 768}, // 1MP XGA
-//  { 800, 600 }, //SVGA
+    { 800, 600 }, //SVGA
     { 800, 480 }, // WVGA
     { 640, 480 }, // VGA
     { 352, 288 }, //CIF
@@ -631,7 +628,7 @@ static const str_map iso[] = {
     { CameraParameters::ISO_200,   CAMERA_ISO_200},
     { CameraParameters::ISO_400,   CAMERA_ISO_400},
     { CameraParameters::ISO_800,   CAMERA_ISO_800 },
-    { CameraParameters::ISO_1600,  CAMERA_ISO_1600 }
+//  { CameraParameters::ISO_1600,  CAMERA_ISO_1600 }
 };
 
 
@@ -644,8 +641,8 @@ static const str_map focus_modes[] = {
 };
 
 static const str_map lensshade[] = {
-//  { CameraParameters::LENSSHADE_ENABLE, TRUE },
-//  { CameraParameters::LENSSHADE_DISABLE, FALSE }
+    { CameraParameters::LENSSHADE_ENABLE, TRUE },
+    { CameraParameters::LENSSHADE_DISABLE, FALSE }
 };
 
 static const str_map continuous_af[] = {
@@ -708,7 +705,7 @@ static String8 lensshade_values;
 static String8 touchafaec_values;
 static String8 picture_format_values;
 static String8 continuous_af_values;
-// static String8 zoom_ratio_values;
+//static String8 zoom_ratio_values;
 static String8 scenemode_values;
 static String8 preview_frame_rate_values;
 
@@ -912,9 +909,9 @@ static void receive_shutter_callback(common_crop_t *crop);
 static void receive_camframetimeout_callback(void);
 static int fb_fd = -1;
 static int32_t mMaxZoom = 0;
-// static bool zoomSupported = false;
+//static bool zoomSupported = false;
 static bool native_get_maxzoom(int camfd, void *pZm);
-// static bool native_get_zoomratios(int camfd, void *pZr, int maxZoomLevel);
+//static bool native_get_zoomratios(int camfd, void *pZr, int maxZoomLevel);
 
 static int dstOffset = 0;
 
@@ -1111,32 +1108,32 @@ void QualcommCameraHardware::initDefaultParameters()
                 continuous_af, sizeof(continuous_af) / sizeof(str_map));
         }
 
-//      if(native_get_maxzoom(mCameraControlFd,
-//              (void *)&mMaxZoom) == true){
-//          LOGD("Maximum zoom value is %d", mMaxZoom);
-//          zoomSupported = true;
-//          if(mMaxZoom > 0){
+        /*if(native_get_maxzoom(mCameraControlFd,
+                (void *)&mMaxZoom) == true){
+            LOGD("Maximum zoom value is %d", mMaxZoom);
+            zoomSupported = true;
+            if(mMaxZoom > 0){
                 //if max zoom is available find the zoom ratios
-//              int16_t * zoomRatios = new int16_t[mMaxZoom+1];
-//              if(zoomRatios != NULL){
-//                  if(native_get_zoomratios(mCameraControlFd,
-//                              (void *)zoomRatios, mMaxZoom + 1) == true){
-//                      zoom_ratio_values =
-//                          create_str(zoomRatios, mMaxZoom + 1);
-//                  }else {
-//                  LOGE("Failed to get zoomratios...");
-//                  }
-//                  delete zoomRatios;
-//              } else {
-//                  LOGE("zoom ratios failed to acquire memory");
-//              }
-//          }
-//      } else {
-//          zoomSupported = false;
-//          LOGE("Failed to get maximum zoom value...setting max "
-//                  "zoom to zero");
-//          mMaxZoom = 0;
-//      }
+                int16_t * zoomRatios = new int16_t[mMaxZoom+1];
+                if(zoomRatios != NULL){
+                    if(native_get_zoomratios(mCameraControlFd,
+                                (void *)zoomRatios, mMaxZoom + 1) == true){
+                        zoom_ratio_values =
+                            create_str(zoomRatios, mMaxZoom + 1);
+                    }else {
+                    LOGE("Failed to get zoomratios...");
+                    }
+                    delete zoomRatios;
+                } else {
+                    LOGE("zoom ratios failed to acquire memory");
+                }
+            }
+        } else {
+            zoomSupported = false;
+            LOGE("Failed to get maximum zoom value...setting max "
+                    "zoom to zero");
+            mMaxZoom = 0;
+        }*/
         preview_frame_rate_values = create_values_range_str(
             MINIMUM_FPS, MAXIMUM_FPS);
         parameter_string_initialized = true;
@@ -1183,15 +1180,15 @@ void QualcommCameraHardware::initDefaultParameters()
     mParameters.set(CameraParameters::KEY_SUPPORTED_JPEG_THUMBNAIL_SIZES,
                 valuesStr.string());
 
-//  if(zoomSupported){
-//      mParameters.set(CameraParameters::KEY_ZOOM_SUPPORTED, "true");
-//      LOGV("max zoom is %d", mMaxZoom);
-//      mParameters.set("max-zoom",mMaxZoom);
-//      mParameters.set(CameraParameters::KEY_ZOOM_RATIOS,
-//                          zoom_ratio_values);
-//  } else {
-//      mParameters.set(CameraParameters::KEY_ZOOM_SUPPORTED, "false");
-//  }
+    /*if(zoomSupported){
+        mParameters.set(CameraParameters::KEY_ZOOM_SUPPORTED, "true");
+        LOGV("max zoom is %d", mMaxZoom);
+        mParameters.set("max-zoom",mMaxZoom);
+        mParameters.set(CameraParameters::KEY_ZOOM_RATIOS,
+                            zoom_ratio_values);
+    } else {
+        mParameters.set(CameraParameters::KEY_ZOOM_SUPPORTED, "false");
+    }*/
 
     mParameters.set(CameraParameters::KEY_ANTIBANDING,
                     CameraParameters::ANTIBANDING_OFF);
@@ -1276,7 +1273,7 @@ void QualcommCameraHardware::initDefaultParameters()
                     CameraParameters::LENSSHADE_ENABLE);
     mParameters.set(CameraParameters::KEY_SUPPORTED_ISO_MODES,
                     iso_values);
-        mParameters.set(CameraParameters::KEY_SUPPORTED_LENSSHADE_MODES,
+    mParameters.set(CameraParameters::KEY_SUPPORTED_LENSSHADE_MODES,
                     lensshade_values);
     mParameters.set(CameraParameters::KEY_SCENE_MODE,
                     CameraParameters::SCENE_MODE_AUTO);
@@ -1551,35 +1548,36 @@ static bool native_get_maxzoom(int camfd, void *pZm)
     }
     LOGD("ctrlCmd.value = %d", *(int32_t *)ctrlCmd.value);
     memcpy(pZoom, (int32_t *)ctrlCmd.value, sizeof(int32_t));
+    *pZoom >>= 1;
 
     LOGV("native_get_maxzoom X");
     return true;
 }
 
-//  static bool native_get_zoomratios(int camfd, void *pZr, int maxZoomSize)
-//{
-//  LOGV("native_get_zoomratios E");
-//  struct msm_ctrl_cmd ctrlCmd;
-//  int16_t *zoomRatios = (int16_t *)pZr;
+/*static bool native_get_zoomratios(int camfd, void *pZr, int maxZoomSize)
+{
+    LOGV("native_get_zoomratios E");
+    struct msm_ctrl_cmd ctrlCmd;
+    int16_t *zoomRatios = (int16_t *)pZr;
 
-//  if(maxZoomSize <= 0)
-//      return false;
+    if(maxZoomSize <= 0)
+        return false;
 
-//  ctrlCmd.type       = CAMERA_GET_PARM_ZOOMRATIOS;
-//  ctrlCmd.timeout_ms = 5000;
-//  ctrlCmd.length     = sizeof(int16_t)* (maxZoomSize);
-//  ctrlCmd.value      = zoomRatios;
-//  ctrlCmd.resp_fd    = camfd;
+    ctrlCmd.type       = CAMERA_GET_PARM_ZOOMRATIOS;
+    ctrlCmd.timeout_ms = 5000;
+    ctrlCmd.length     = sizeof(int16_t)* (maxZoomSize);
+    ctrlCmd.value      = zoomRatios;
+    ctrlCmd.resp_fd    = camfd;
 
-//  if (ioctl(camfd, MSM_CAM_IOCTL_CTRL_COMMAND, &ctrlCmd) < 0) {
-//      LOGE("native_get_zoomratios: ioctl fd %d error %s",
-//              camfd,
-//              strerror(errno));
-//      return false;
-//  }
-//  LOGV("native_get_zoomratios X");
-//  return true;
-//}
+    if (ioctl(camfd, MSM_CAM_IOCTL_CTRL_COMMAND, &ctrlCmd) < 0) {
+        LOGE("native_get_zoomratios: ioctl fd %d error %s",
+                camfd,
+                strerror(errno));
+        return false;
+    }
+    LOGV("native_get_zoomratios X");
+    return true;
+}*/
 
 static bool native_set_afmode(int camfd, isp3a_af_mode_t af_type)
 {
@@ -1596,9 +1594,10 @@ static bool native_set_afmode(int camfd, isp3a_af_mode_t af_type)
         LOGE("native_set_afmode: ioctl fd %d error %s\n",
              camfd,
              strerror(errno));
-
+    rc =*(int *)(ctrlCmd.value);
     LOGV("native_set_afmode: ctrlCmd.status == %d\n", ctrlCmd.status);
-    return rc >= 0 /*&& ctrlCmd.status == CAMERA_EXIT_CB_DONE*/;
+    LOGV("native_set_afmode: rc == %d\n", rc);
+    return rc > 0 && ctrlCmd.status == CAMERA_EXIT_CB_DONE;
 }
 
 static bool native_cancel_afmode(int camfd, int af_fd)
@@ -2254,10 +2253,18 @@ void QualcommCameraHardware::runFrameThread(void *data)
     {
         LINK_cam_frame(data);
     }
-
-    mPreviewHeap.clear();
-    if(( mCurrentTarget == TARGET_MSM7630 ) || (mCurrentTarget == TARGET_QSD8250))
-        mRecordHeap.clear();
+    {
+        /* In case of ESD, don't clear the preview and record buffers.
+         * The solution in this scenario expects that the same preview
+         * and record buffers to be available when the VFE resets/recovers.
+         */
+        Mutex::Autolock l(&mCamframeTimeoutLock);
+        if(!camframe_timeout_flag) {
+            mPreviewHeap.clear();
+            if(( mCurrentTarget == TARGET_MSM7630 ) || (mCurrentTarget == TARGET_QSD8250))
+                mRecordHeap.clear();
+        }
+    }
 
 #if DLOPEN_LIBMMCAMERA
     if (libhandle) {
@@ -2944,6 +2951,7 @@ void QualcommCameraHardware::stopPreviewInternal()
 {
     LOGV("stopPreviewInternal E: %d", mCameraRunning);
     if (mCameraRunning) {
+// [ -!- ]
 #if 0
         // Cancel auto focus.
         {
@@ -2952,6 +2960,7 @@ void QualcommCameraHardware::stopPreviewInternal()
             }
         }
 #endif
+// [ -!- ]
 
         Mutex::Autolock l(&mCamframeTimeoutLock);
         {
@@ -3109,12 +3118,14 @@ status_t QualcommCameraHardware::cancelAutoFocusInternal()
         return NO_ERROR;
     }
 
+// [ -!- ]
 //#if 0
     if (mAutoFocusFd < 0) {
         LOGV("cancelAutoFocusInternal X: not in progress");
         return NO_ERROR;
     }
 //#endif
+// [ -!- ]
 
     status_t rc = NO_ERROR;
     status_t err;
@@ -3755,7 +3766,7 @@ bool QualcommCameraHardware::initRecord()
         recordframes[cnt].buffer =
             (uint32_t)mRecordHeap->mHeap->base() + mRecordHeap->mAlignedBufferSize * cnt;
         recordframes[cnt].y_off = 0;
-        recordframes[cnt].cbcr_off = mDimension.video_width  * mDimension.video_height;
+        recordframes[cnt].cbcr_off = CbCrOffset;
         recordframes[cnt].path = OUTPUT_TYPE_V;
         record_buffers_tracking_flag[cnt] = false;
         LOGV ("initRecord :  record heap , video buffers  buffer=%lu fd=%d y_off=%d cbcr_off=%d \n",
@@ -3821,7 +3832,7 @@ status_t QualcommCameraHardware::startRecording()
             pthread_attr_t attr;
             pthread_attr_init(&attr);
             pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-            mVideoThreadRunning = pthread_create(&mVideoThread,
+            mVideoThreadRunning = !pthread_create(&mVideoThread,
                                               &attr,
                                               video_thread,
                                               NULL);
@@ -3894,8 +3905,10 @@ void QualcommCameraHardware::releaseRecordingFrame(
             mFrameThreadWaitLock.lock();
             if(mFrameThreadRunning ) {
                 //Reset the track flag for this frame buffer
-                record_buffers_tracking_flag[cnt] = false;
-                LINK_camframe_free_video(releaseframe);
+                if(record_buffers_tracking_flag[cnt] == true) {
+                    record_buffers_tracking_flag[cnt] = false;
+                    LINK_camframe_free_video(releaseframe);
+                }
             }
 
             mFrameThreadWaitLock.unlock();
