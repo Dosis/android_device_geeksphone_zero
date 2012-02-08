@@ -2158,19 +2158,18 @@ status_t AudioHardware::AudioStreamInMSM72xx::setParameters(const String8& keyVa
 
 status_t AudioHardware::setFmVolume(float v)
 {
-    float ratio = 2.5;
-    int volume = (unsigned int)(AudioSystem::logToLinear(v) * ratio);
+    unsigned int VolValue = (unsigned int)(AudioSystem::logToLinear(v));
+    int volume = (unsigned int)(VolValue*VolValue/100);
+
     char volhex[10] = "";
     sprintf(volhex, "0x%x ", volume);
-    char volreg[100] = "hcitool cmd 0x3f 0xa 0x5 0xe0 0x41 0xf 0 ";
+    char volreg[100] = "hcitool cmd 0x3f 0x15 0xf8 0x0 ";
 
     strcat(volreg, volhex);
+    strcat(volreg, "0");
 
-    strcat(volreg, "0 0 0");
-
-    system("hcitool cmd 0x3f 0xa 0x5 0xc0 0x41 0xf 0 0x20 0 0 0");
-    system("hcitool cmd 0x3f 0xa 0x5 0xe4 0x41 0xf 0 0x00 0 0 0");
     system(volreg);
+
     return NO_ERROR;
 }
 #endif
