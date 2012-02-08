@@ -2155,7 +2155,6 @@ status_t AudioHardware::AudioStreamInMSM72xx::setParameters(const String8& keyVa
 }
 
 #ifdef HAVE_FM_RADIO
-
 status_t AudioHardware::setFmVolume(float v)
 {
     unsigned int VolValue = (unsigned int)(AudioSystem::logToLinear(v));
