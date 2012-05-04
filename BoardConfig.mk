@@ -17,7 +17,6 @@ WIFI_FIRMWARE_LOADER        := wifi-loader
 BOARD_WPA_SUPPLICANT_DRIVER := AWEXT
 BOARD_USE_CAF_LIBCAMERA := true
 
-
 # inherit from the proprietary version
 -include vendor/geeksphone/zero/BoardConfigVendor.mk
 

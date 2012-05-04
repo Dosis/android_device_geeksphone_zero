@@ -39,10 +39,6 @@ lib/egl/libGLESv1_CM_adreno200.so
 lib/egl/libGLESv2_adreno200.so
 lib/egl/libq3dtools_adreno200.so
 
-lib/hw/lights.msm7k.so
-
-lib/hw/sensors.default.so
-
 lib/libaudioeq.so
 
 lib/libauth.so
@@ -93,4 +89,3 @@ lib/libOmxWmvDec.so
 for FILE in $FILES; do
 	adb pull system/$FILE ../../../vendor/geeksphone/zero/proprietary/$FILE
 done
-

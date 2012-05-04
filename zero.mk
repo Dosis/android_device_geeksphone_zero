@@ -1,5 +1,5 @@
 # The gps config appropriate for this device
-$(call inherit-product, device/common/gps/gps_eu_supl.mk)
+$(call inherit-product, device/common/gps/gps_ww_supl.mk)
 
 $(call inherit-product-if-exists, vendor/geeksphone/zero/zero-vendor.mk)
 
@@ -12,7 +12,8 @@ PRODUCT_PACKAGES += \
     gps.zero \
     copybit.msm7k \
     gralloc.zero \
-    libOmxCore
+    libOmxCore \
+    lights.msm7k
 
 # Extra apps
 #PRODUCT_PACKAGES += \
@@ -26,7 +27,6 @@ endif
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_KERNEL):kernel
-
 
 # Live wallpaper packages
 PRODUCT_PACKAGES += \
@@ -116,7 +116,11 @@ PRODUCT_COPY_FILES += \
 ## Módulo TUN
 PRODUCT_COPY_FILES += \
     device/geeksphone/zero/prebuilt/tun.ko:system/lib/modules/tun.ko
- 
+
+## Módulo CIFS
+PRODUCT_COPY_FILES += \
+    device/geeksphone/zero/prebuilt/cifs.ko:system/lib/modules/cifs.ko
+
 ## Other libraries and proprietary binaries
 PRODUCT_COPY_FILES += \
     vendor/geeksphone/zero/proprietary/bin/bt_tool.dat:system/bin/bt_tool.dat \
@@ -131,7 +135,6 @@ PRODUCT_COPY_FILES += \
     device/geeksphone/zero/prebuilt/init.qcom.coex.sh:system/etc/init.qcom.coex.sh \
     device/geeksphone/zero/prebuilt/wificit.sh:system/bin/wificit.sh \
     device/geeksphone/zero/prebuilt/nvram.txt:system/etc/wifi/nvram.txt \
-    device/geeksphone/zero/prebuilt/sensors.zero.so:system/lib/hw/sensors.zero.so \
     device/geeksphone/zero/AutoVolumeControl.txt:system/etc/AutoVolumeControl.txt \
     device/geeksphone/zero/AudioFilter.csv:system/etc/AudioFilter.csv \
     vendor/geeksphone/zero/proprietary/lib/libaudioeq.so:system/lib/libaudioeq.so \
@@ -143,9 +146,7 @@ PRODUCT_COPY_FILES += \
     vendor/geeksphone/zero/proprietary/etc/firmware/yamato_pfp.fw:system/etc/firmware/yamato_pfp.fw \
     vendor/geeksphone/zero/proprietary/etc/firmware/yamato_pm4.fw:system/etc/firmware/yamato_pm4.fw \
     vendor/geeksphone/zero/proprietary/lib/libgsl.so:system/lib/libgsl.so \
-    vendor/geeksphone/zero/proprietary/etc/BCM4325D1_004.002.004.0230.0244.hcd:system/etc/BCM4325D1_004.002.004.0230.0244.hcd \
-    vendor/geeksphone/zero/proprietary/lib/hw/lights.msm7k.so:system/lib/hw/lights.zero.so
-
+    vendor/geeksphone/zero/proprietary/etc/BCM4325D1_004.002.004.0230.0244.hcd:system/etc/BCM4325D1_004.002.004.0230.0244.hcd
 
 PRODUCT_COPY_FILES += \
     device/geeksphone/zero/media_profiles.xml:system/etc/media_profiles.xml \
